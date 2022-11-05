@@ -9,6 +9,7 @@ public class Post {
     int postOwner;
 //List comments
     public Post() {
+
     }
 
     public Post(String post, String postDate, int postOwner) {
