@@ -2,16 +2,16 @@ package com.social.media.model;
 
 public class Friendship {
     int id;
-    User user1;
-    User user2;
+    int user1Id;
+    int user2Id;
     String CreateDate;
 
     public Friendship() {
     }
 
-    public Friendship(User user1, User user2, String createDate) {
-        this.user1 = user1;
-        this.user2 = user2;
+    public Friendship(int user1Id, int user2Id, String createDate) {
+        this.user1Id = user1Id;
+        this.user2Id = user2Id;
         CreateDate = createDate;
     }
 
@@ -23,20 +23,20 @@ public class Friendship {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public int getUser1Id() {
+        return user1Id;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setUser1Id(int user1Id) {
+        this.user1Id = user1Id;
     }
 
-    public User getUser2() {
-        return user2;
+    public int getUser2Id() {
+        return user2Id;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setUser2Id(int user2Id) {
+        this.user2Id = user2Id;
     }
 
     public String getCreateDate() {
@@ -51,8 +51,8 @@ public class Friendship {
     public String toString() {
         return "Friendship{" +
                 "id=" + id +
-                ", user1=" + user1 +
-                ", user2=" + user2 +
+                ", user1Id=" + user1Id +
+                ", user2Id=" + user2Id +
                 ", CreateDate='" + CreateDate + '\'' +
                 '}';
     }

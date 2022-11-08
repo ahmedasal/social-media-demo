@@ -40,8 +40,8 @@ public class PostCrud implements Crud<Post, Integer> {
 
 
         }
-        preparedStatement.close();
         resultSet.close();
+        preparedStatement.close();
         return post;
     }
 
