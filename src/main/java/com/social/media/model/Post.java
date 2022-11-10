@@ -1,5 +1,6 @@
 package com.social.media.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
@@ -7,7 +8,8 @@ public class Post {
     String post;
     String postDate;
     int postOwner;
-//List comments
+
+    ArrayList<Comment> comments;
     public Post() {
 
     }
@@ -51,6 +53,14 @@ public class Post {
 
     public void setPostOwner(int postOwner) {
         this.postOwner = postOwner;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

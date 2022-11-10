@@ -12,8 +12,9 @@ import java.util.ArrayList;
 public class WallService {
     Wall wall = new Wall();
 
-    public Wall getWall(Connection connection, int PostOwnerId) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("Select distinct post,postDate,postOwner,updateDate,posts.id  from posts,friendship,users where user2 = postOwner and  users.id = user1 and user1 = 32 order by postDate ");
+    public ArrayList<Post> getWallPosts(Connection connection, int PostOwnerId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("Select distinct post,postDate,postOwner,updateDate,posts.id  from posts,friendship,users where user2 = postOwner and  users.id = user1 and user1 = ? order by postDate ");
+        preparedStatement.setInt(1, PostOwnerId);
         Post post = new Post();
         ArrayList<Post> posts = new ArrayList<>();
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -22,16 +23,17 @@ public class WallService {
             post.setPostDate(resultSet.getString("postDate"));
             post.setPostOwner(resultSet.getInt("postOwner"));
             post.setPost(resultSet.getString("post"));
-
             posts.add(post);
-
-
         }
 
-        wall.setPosts(posts);
-
-        return wall;
+        return posts;
     }
+
+
+
+
+
+
 
 
 }
