@@ -18,6 +18,11 @@ public class PostService {
         postCrud.insert(connection, post);
         return post;
     }
+    public Post getPost(Connection connection, Integer id) throws SQLException {
+        Post post = postCrud.get(connection, id);
+        return post;
+
+    }
 
 //TODO getPost (postCrud.getPost commentCrud.getPstComments
     public int deletePost(Connection connection, int id) throws SQLException {

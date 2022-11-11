@@ -13,9 +13,16 @@ public class UserService {
     UserCrud userCrud = new UserCrud();
 
     public User register(Connection connection, User user) throws SQLException {
+        // TODO add user validation (add to user crud getUserByEmail return null if not exist)
+        PreparedStatement preparedStatement = connection.prepareStatement("select email from users where email=? ");
+        preparedStatement.setString(1, user.getEmail());
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-     // TODO add user validation (add to user crud getUserByEmail return null if not exist)
-        user = userCrud.insert(connection, user);
+        if (resultSet.next()) {
+            System.out.println("the user already exists");
+        } else {
+            user = userCrud.insert(connection, user);
+        }
         return user;
     }
 
