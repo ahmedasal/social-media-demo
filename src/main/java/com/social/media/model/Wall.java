@@ -1,9 +1,7 @@
 package com.social.media.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import java.util.Map;
 
 public class Wall {
     ArrayList<Post> posts = new ArrayList<>();

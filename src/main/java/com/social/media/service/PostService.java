@@ -34,10 +34,11 @@ public class PostService {
         PreparedStatement preparedStatement = connection.prepareStatement("select * from comments where post_id = ? order by create_date");
         preparedStatement.setInt(1, postId);
         ArrayList<Comment> comments =  new ArrayList<>();
-        Comment comment = new Comment();
-        User user = new User();
+
         ResultSet resultSet = preparedStatement.executeQuery();
         while(resultSet.next()){
+            Comment comment = new Comment();
+            User user = new User();
             comment.setId(resultSet.getInt("id"));
             comment.setPostId(postId);
             comment.setCommentText(resultSet.getString("comment_text"));

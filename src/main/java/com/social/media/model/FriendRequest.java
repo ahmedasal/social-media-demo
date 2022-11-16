@@ -2,8 +2,8 @@ package com.social.media.model;
 
 public class FriendRequest {
     int id;
-    User user1;
-    User user2;
+    int senderUser;
+    int ReceiverUser;
     String CreateDate;
     String comfirmStatus;
     String comfirmDate;
@@ -11,15 +11,13 @@ public class FriendRequest {
     public FriendRequest() {
         }
 
-    public FriendRequest(User user1, User user2, String createDate, String comfirmStatus, String comfirmDate) {
-        this.user1 = user1;
-        this.user2 = user2;
+    public FriendRequest(int senderUser, int receiverUser, String createDate, String comfirmStatus, String comfirmDate) {
+        this.senderUser = senderUser;
+        ReceiverUser = receiverUser;
         CreateDate = createDate;
         this.comfirmStatus = comfirmStatus;
         this.comfirmDate = comfirmDate;
     }
-
-
 
     public int getId() {
         return id;
@@ -29,20 +27,20 @@ public class FriendRequest {
         this.id = id;
     }
 
-    public User getUser1() {
-        return user1;
+    public int getSenderUser() {
+        return senderUser;
     }
 
-    public void setUser1(User user1) {
-        this.user1 = user1;
+    public void setSenderUser(int senderUser) {
+        this.senderUser = senderUser;
     }
 
-    public User getUser2() {
-        return user2;
+    public int getReceiverUser() {
+        return ReceiverUser;
     }
 
-    public void setUser2(User user2) {
-        this.user2 = user2;
+    public void setReceiverUser(int receiverUser) {
+        ReceiverUser = receiverUser;
     }
 
     public String getCreateDate() {
@@ -73,8 +71,8 @@ public class FriendRequest {
     public String toString() {
         return "FriendRequest{" +
                 "id=" + id +
-                ", user1=" + user1 +
-                ", user2=" + user2 +
+                ", senderUser=" + senderUser +
+                ", ReceiverUser=" + ReceiverUser +
                 ", CreateDate='" + CreateDate + '\'' +
                 ", comfirmStatus='" + comfirmStatus + '\'' +
                 ", comfirmDate='" + comfirmDate + '\'' +

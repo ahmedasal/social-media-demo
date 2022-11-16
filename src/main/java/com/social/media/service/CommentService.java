@@ -1,5 +1,6 @@
 package com.social.media.service;
 
+import com.social.media.crud.CommentCrud;
 import com.social.media.model.Comment;
 import com.social.media.model.User;
 
@@ -10,6 +11,45 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CommentService {
+    CommentCrud commentCrud = new CommentCrud();
+
+    // add comment
+    public Comment addComment(Connection connection, Comment comment) throws SQLException {
+        commentCrud.insert(connection, comment);
+        // then>> update posts set comments_count=comments_count+1 where id=?
+        PreparedStatement preparedStatement = connection.prepareStatement("update posts set comments_count = comments_count+1 where id = ?");
+        preparedStatement.setInt(1, comment.getPostId());
+        preparedStatement.execute();
+        preparedStatement.close();
+        return comment;
+    }
+
+    //remove comment
+    public int removeComment(Connection connection, int id) throws SQLException {
+        int postId = 0;
+        PreparedStatement preparedStatement = connection.prepareStatement("select post_id from comments where id = ?");
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(resultSet.next()) {
+            postId = resultSet.getInt("post_id");
+        }
+        commentCrud.delete(connection, id);
+        // decrease comments by one
+        preparedStatement = connection.prepareStatement("update posts set comments_count = comments_count-1 where id = ?");
+        preparedStatement.setInt(1, postId);
+        int count = preparedStatement.executeUpdate();
+        preparedStatement.close();
+        return count;
+    }
+
+
+
+
+
+
+
+
+
     public ArrayList<Comment> getCommentchildren(Connection connection, int commentId) throws SQLException {
         ArrayList<Comment> comments = new ArrayList<>();
         Comment comment = new Comment();
@@ -18,7 +58,7 @@ public class CommentService {
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        while(resultSet.next()){
+        while (resultSet.next()) {
             comment.setId(resultSet.getInt("id"));
             comment.setCommentText(resultSet.getString("comment_text"));
             user.setId(resultSet.getInt("user_id"));
@@ -33,14 +73,8 @@ public class CommentService {
         }
 
 
-
-
-
-
-
-
         return comments;
     }
-    
+
 
 }

@@ -13,7 +13,11 @@ public class WallService {
     Wall wall = new Wall();
 
     public ArrayList<Post> getWallPosts(Connection connection, int PostOwnerId) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("Select distinct post,postDate,postOwner,updateDate,posts.id  from posts,friendship,users where user2 = postOwner and  users.id = user1 and user1 = ? order by postDate ");
+        // select post, postDate, postOwner, updateDate, id from posts where postOwner in
+        // (select user1 from users  where user2=? union select user2 from users where user1=?)
+        //
+      //  PreparedStatement preparedStatement = connection.prepareStatement("Select post,postDate,postOwner,updateDate,posts.id  from posts where postOwner in (select user1 from users where user2 = ? union select user2 from users where user1 = ?") ;
+        PreparedStatement preparedStatement = connection.prepareStatement("select post, postDate, postOwner, updateDate, id from posts where postOwner in (select user1 from users  where user2=? union select user2 from users where user1=?)");
         preparedStatement.setInt(1, PostOwnerId);
         Post post = new Post();
         ArrayList<Post> posts = new ArrayList<>();
