@@ -2,10 +2,7 @@ package com.social.media.crud;
 
 import com.social.media.model.Post;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PostCrud implements Crud<Post, Integer> {
 
@@ -14,7 +11,7 @@ public class PostCrud implements Crud<Post, Integer> {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into posts (post, postDate, postOwner) values (?,?,?)");
 
         preparedStatement.setString(1, post.getPost());
-        preparedStatement.setString(2, post.getPostDate());
+        preparedStatement.setTimestamp(2, new Timestamp(post.getPostDate().getTime()));
         preparedStatement.setInt(3, post.getPostOwner());
 
         preparedStatement.execute();
@@ -36,7 +33,7 @@ public class PostCrud implements Crud<Post, Integer> {
             post.setId(id);
             post.setPost(resultSet.getString("post"));
             post.setPostOwner(resultSet.getInt("postOwner"));
-            post.setPostDate(resultSet.getString("postDate"));
+            post.setPostDate(resultSet.getTimestamp("postDate"));
 
 
         }
@@ -48,12 +45,11 @@ public class PostCrud implements Crud<Post, Integer> {
     @Override
     public Post update(Connection connection, Post post) throws SQLException {
 
-        PreparedStatement preparedStatement = connection.prepareStatement("update posts set post = ? , postDate = ?, postOwner = ? where id = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("update posts set post = ?, postOwner = ? where id = ?");
 
         preparedStatement.setString(1, post.getPost());
-        preparedStatement.setString(2, post.getPostDate());
-        preparedStatement.setInt(3, post.getPostOwner());
-        preparedStatement.setInt(4, post.getId());
+        preparedStatement.setInt(2, post.getPostOwner());
+        preparedStatement.setInt(3, post.getId());
 
 
         preparedStatement.execute();

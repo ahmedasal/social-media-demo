@@ -19,13 +19,25 @@ public class UserService {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         if (resultSet.next()) {
-            System.out.println("the user already exists");
+            throw new SQLException("there is a user with the same email exists");
         } else {
             user = userCrud.insert(connection, user);
         }
+        int id = getUserId(connection, user.getUsername());
+        user.setId(id);
         return user;
     }
 
+    public int getUserId(Connection connection, String username) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("select id from users where username = ?");
+        preparedStatement.setString(1, username);
+        int id = 0;
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            id = resultSet.getInt("id");
+        }
+        return id;
+    }
 
     public User login(Connection connection, String username, String password) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("select id from users where username = ? and password =?");
@@ -33,15 +45,13 @@ public class UserService {
         preparedStatement.setString(2, password);
         int id = 0;
         ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
+        if (resultSet.next()) {
             id = resultSet.getInt("id");
-
         }
-        User user = userCrud.get(connection, id);
         if (id == 0) {
             return null;
         }
-
+        User user = userCrud.get(connection, id);
         return user;
     }
 }

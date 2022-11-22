@@ -1,12 +1,12 @@
 package com.social.media.model;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class Post {
     int id;
     String post;
-    String postDate;
+    Date postDate;
     int postOwner;
 
     ArrayList<Comment> comments;
@@ -14,7 +14,7 @@ public class Post {
 
     }
 
-    public Post(String post, String postDate, int postOwner) {
+    public Post(String post, Date postDate, int postOwner) {
         this.post = post;
         this.postDate = postDate;
         this.postOwner = postOwner;
@@ -39,11 +39,11 @@ public class Post {
         this.post = post;
     }
 
-    public String getPostDate() {
+    public Date getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(String postDate) {
+    public void setPostDate(Date postDate) {
         this.postDate = postDate;
     }
 
