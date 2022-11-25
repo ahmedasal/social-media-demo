@@ -42,5 +42,15 @@
         <servlet-name>wall</servlet-name>
         <url-pattern>/wall</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>like</servlet-name>
+        <servlet-class>com.social.media.controllers.LikeUnlikeServlet</servlet-class>
+    </servlet>
+<servlet-mapping>
+    <servlet-name>like</servlet-name>
+    <url-pattern>/like</url-pattern>
+</servlet-mapping>
+
+
 
 </web-app>

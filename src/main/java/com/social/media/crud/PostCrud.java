@@ -8,11 +8,13 @@ public class PostCrud implements Crud<Post, Integer> {
 
     @Override
     public Post insert(Connection connection, Post post) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into posts (post, postDate, postOwner) values (?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into posts (post, postDate, updateDate, postOwner) values (?,?,?, ?)");
 
+        Timestamp createdOn = new Timestamp(new java.util.Date().getTime());
         preparedStatement.setString(1, post.getPost());
-        preparedStatement.setTimestamp(2, new Timestamp(post.getPostDate().getTime()));
-        preparedStatement.setInt(3, post.getPostOwner());
+        preparedStatement.setTimestamp(2, createdOn);
+        preparedStatement.setTimestamp(3, createdOn);
+        preparedStatement.setInt(4, post.getPostOwner());
 
         preparedStatement.execute();
         preparedStatement.close();
@@ -45,11 +47,12 @@ public class PostCrud implements Crud<Post, Integer> {
     @Override
     public Post update(Connection connection, Post post) throws SQLException {
 
-        PreparedStatement preparedStatement = connection.prepareStatement("update posts set post = ?, postOwner = ? where id = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("update posts set post = ?, postOwner = ?, updateDate=? where id = ?");
 
         preparedStatement.setString(1, post.getPost());
         preparedStatement.setInt(2, post.getPostOwner());
-        preparedStatement.setInt(3, post.getId());
+        preparedStatement.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
+        preparedStatement.setInt(4, post.getId());
 
 
         preparedStatement.execute();

@@ -49,7 +49,19 @@ public class PostService {
             comment.setUpdatedDate(resultSet.getString("update_date"));
             comments.add(comment);
         }
+
         return comments;
     }
+    public int getLikesCount(Connection connection, int postId) throws SQLException {
+        int count = 0;
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT likes_count FROM socialMediaApp.posts where id= ?;");
+        preparedStatement.setInt(1, postId);
+        ResultSet rs = preparedStatement.executeQuery();
+        if(rs.next()){
+            count = rs.getInt("likes_count");
+        }
+        return count;
+    }
+
 
 }
