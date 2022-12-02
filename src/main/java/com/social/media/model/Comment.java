@@ -5,6 +5,8 @@ public class Comment {
     int postId;
     String commentText;
     User user;
+
+    String username;
     Integer parentCommentId;
     String createdDate;
     String updatedDate;
@@ -76,6 +78,14 @@ public class Comment {
 
     public void setPostId(int postId) {
         this.postId = postId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

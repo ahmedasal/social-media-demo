@@ -30,7 +30,7 @@ public class CommentService {
         PreparedStatement preparedStatement = connection.prepareStatement("select post_id from comments where id = ?");
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             postId = resultSet.getInt("post_id");
         }
         commentCrud.delete(connection, id);
@@ -41,13 +41,6 @@ public class CommentService {
         preparedStatement.close();
         return count;
     }
-
-
-
-
-
-
-
 
 
     public ArrayList<Comment> getCommentchildren(Connection connection, int commentId) throws SQLException {
@@ -75,6 +68,9 @@ public class CommentService {
 
         return comments;
     }
-
-
 }
+
+
+
+
+

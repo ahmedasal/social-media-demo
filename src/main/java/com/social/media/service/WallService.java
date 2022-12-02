@@ -36,6 +36,8 @@ public class WallService {
             post.setPost(resultSet.getString("post"));
             post.setComments(postService.getPostComments(connection, resultSet.getInt("postId")));
             post.setLikesCount(postService.getLikesCount(connection, post.getId()));
+            post.setLikedByMe(postService.likedByMe(connection, userId, post.getId()));
+            post.setUsername(postService.getUsername(connection, post.getPostOwner()));
             posts.add(post);
         }
 

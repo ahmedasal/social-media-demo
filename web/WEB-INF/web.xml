@@ -18,14 +18,14 @@
     </servlet-mapping>
 
 
-    <servlet>
-        <servlet-name>home</servlet-name>
-        <servlet-class>com.social.media.controllers.HomeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>home</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
+    <!--    <servlet>-->
+    <!--        <servlet-name>home</servlet-name>-->
+    <!--        <servlet-class>com.social.media.controllers.HomeServlet</servlet-class>-->
+    <!--    </servlet>-->
+    <!--    <servlet-mapping>-->
+    <!--        <servlet-name>home</servlet-name>-->
+    <!--        <url-pattern>/</url-pattern>-->
+    <!--    </servlet-mapping>-->
     <servlet>
         <servlet-name>login</servlet-name>
         <servlet-class>com.social.media.controllers.LoginServlet</servlet-class>
@@ -46,11 +46,35 @@
         <servlet-name>like</servlet-name>
         <servlet-class>com.social.media.controllers.LikeUnlikeServlet</servlet-class>
     </servlet>
-<servlet-mapping>
-    <servlet-name>like</servlet-name>
-    <url-pattern>/like</url-pattern>
-</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>like</servlet-name>
+        <url-pattern>/like</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>comment</servlet-name>
+        <servlet-class>com.social.media.controllers.CommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>comment</servlet-name>
+        <url-pattern>/comment</url-pattern>
+    </servlet-mapping>
 
+    <filter>
+        <filter-name>securityFilter</filter-name>
+        <filter-class>com.social.media.controllers.SecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>securityFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
+    <servlet>
+        <servlet-name>page</servlet-name>
+        <servlet-class>com.social.media.controllers.PageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>page</servlet-name>
+        <url-pattern>/page</url-pattern>
+    </servlet-mapping>
 
 </web-app>

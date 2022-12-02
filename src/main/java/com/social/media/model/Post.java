@@ -3,6 +3,7 @@ package com.social.media.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Post {
     int id;
@@ -10,9 +11,14 @@ public class Post {
     Date postDate;
     int postOwner;
     int likesCount;
+    String username;
     int commentsCount;
+    int pageId;
+
+    boolean likedByMe;
 
     List<Comment> comments;
+
     public Post() {
 
     }
@@ -22,8 +28,6 @@ public class Post {
         this.postDate = postDate;
         this.postOwner = postOwner;
     }
-
-
 
 
     public int getId() {
@@ -82,6 +86,34 @@ public class Post {
         this.commentsCount = commentsCount;
     }
 
+    public boolean isLikedByMe() {
+        return likedByMe;
+    }
+
+    public boolean getLikedByMe() {
+        return likedByMe;
+    }
+
+    public void setLikedByMe(boolean likedByMe) {
+        this.likedByMe = likedByMe;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public int getPageId() {
+        return pageId;
+    }
+
+    public void setPageId(int pageId) {
+        this.pageId = pageId;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -90,7 +122,10 @@ public class Post {
                 ", postDate=" + postDate +
                 ", postOwner=" + postOwner +
                 ", likesCount=" + likesCount +
+                ", username='" + username + '\'' +
                 ", commentsCount=" + commentsCount +
+                ", pageId=" + pageId +
+                ", likedByMe=" + likedByMe +
                 ", comments=" + comments +
                 '}';
     }

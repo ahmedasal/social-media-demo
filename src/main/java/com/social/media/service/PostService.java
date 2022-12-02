@@ -14,6 +14,14 @@ import java.util.ArrayList;
 public class PostService {
     PostCrud postCrud = new PostCrud();
 
+    public Boolean likedByMe(Connection connection, int userId, int postId) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("select count(id) as total from likes where user=? and post_id = ?");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, postId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        resultSet.next();
+        return resultSet.getInt("total") > 0;
+    }
     public Post writePost(Connection connection, Post post) throws SQLException {
         postCrud.insert(connection, post);
         return post;
@@ -44,6 +52,7 @@ public class PostService {
             comment.setCommentText(resultSet.getString("comment_text"));
             user.setId(resultSet.getInt("user_id"));
             comment.setUser(user);
+            comment.setUsername(getUsername(connection, user.getId()));
             comment.setParentCommentId(resultSet.getInt("comment_parent_id"));
             comment.setCreatedDate(resultSet.getString("create_date"));
             comment.setUpdatedDate(resultSet.getString("update_date"));
@@ -63,5 +72,16 @@ public class PostService {
         return count;
     }
 
+
+    public String getUsername (Connection connection, int id) throws SQLException {
+        String username = null;
+        PreparedStatement preparedStatement = connection.prepareStatement("select username from users where id = ?;");
+        preparedStatement.setInt(1, id);
+        ResultSet rs = preparedStatement.executeQuery();
+        if(rs.next()){
+            username = rs.getString("username");
+        }
+        return username;
+    }
 
 }
