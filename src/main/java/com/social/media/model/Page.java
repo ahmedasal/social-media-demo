@@ -8,6 +8,7 @@ public class Page {
     int id;
     String pageName;
     Timestamp createPageDate;
+    int adminUser;
 
     public int getId() {
         return id;
@@ -32,6 +33,14 @@ public class Page {
 
     public void setCreatePageDate(Timestamp createPageDate) {
         this.createPageDate = createPageDate;
+    }
+
+    public int getAdminUser() {
+        return adminUser;
+    }
+
+    public void setAdminUser(int adminUser) {
+        this.adminUser = adminUser;
     }
 
     @Override

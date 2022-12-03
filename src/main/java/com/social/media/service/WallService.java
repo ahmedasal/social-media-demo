@@ -20,7 +20,8 @@ public class WallService {
         // (select user1 from users  where user2=? union select user2 from users where user1=?)
         //
       //  PreparedStatement preparedStatement = connection.prepareStatement("Select post,postDate,postOwner,updateDate,posts.id  from posts where postOwner in (select user1 from users where user2 = ? union select user2 from users where user1 = ?") ;
-        PreparedStatement preparedStatement = connection.prepareStatement("select post, postDate, postOwner, updateDate, id as postId from posts where postOwner in (select IF(user1=?,user2, user1) as friend from friendship  where user2=? or user1=?)  order by updateDate desc");
+        PreparedStatement preparedStatement = connection.prepareStatement("select post, postDate, postOwner, updateDate, id as postId from posts " +
+                "where postOwner in (select IF(user1=?,user2, user1) as friend from friendship  where user2=? or user1=?)  order by updateDate desc");
         preparedStatement.setInt(1, userId);
         preparedStatement.setInt(2, userId);
         preparedStatement.setInt(3, userId);

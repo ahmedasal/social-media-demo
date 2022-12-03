@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class PageService {
 
@@ -38,18 +36,18 @@ public class PageService {
     public List<Post> showPagePosts(Connection connection, int pageId , int userId) throws SQLException {
         List<Post> posts = new LinkedList<>();
         PostService postService = new PostService();
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from posts where page_id = ? order by postDate desc");
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from posts where page_id = ? order by postDate desc ");
         preparedStatement.setInt(1, pageId);
 
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()){
             Post post = new Post();
             post.setPageId(pageId);
-            post.setId(resultSet.getInt("postId"));
+            post.setId(resultSet.getInt("id"));
             post.setPostDate(resultSet.getDate("postDate"));
             post.setPostOwner(resultSet.getInt("postOwner"));
             post.setPost(resultSet.getString("post"));
-            post.setComments(postService.getPostComments(connection, resultSet.getInt("postId")));
+            post.setComments(postService.getPostComments(connection, post.getId()));
             post.setLikesCount(postService.getLikesCount(connection, post.getId()));
             post.setLikedByMe(postService.likedByMe(connection, userId, post.getId()));
             post.setUsername(postService.getUsername(connection, post.getPostOwner()));
@@ -58,8 +56,27 @@ public class PageService {
         return posts;
     }
 
+public Set<String> allPages(Connection connection) throws SQLException {
+        Set<String> names = new LinkedHashSet<>();
+        PreparedStatement preparedStatement = connection.prepareStatement("select name from pages");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()){
+            String name = resultSet.getString("name");
+            names.add(name);
+        }
+        return names;
+}
 
-
+public int getPageId(Connection connection, String name) throws SQLException {
+        int id = 0;
+        PreparedStatement preparedStatement = connection.prepareStatement("select id from pages where name = ?");
+        preparedStatement.setString(1, name);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(resultSet.next()){
+            id = resultSet.getInt("id");
+        }
+        return id;
+}
 
 
 }

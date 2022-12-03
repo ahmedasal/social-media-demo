@@ -326,7 +326,7 @@
                     <div class="card-body text-center ">
                         <img src="static/img/avatar-dhg.png" alt="img" width="120px" height="120px"
                              class="rounded-circle mt-n5">
-                        <h5 class="card-title"><c:out value="${currentUser.username}"></c:out></h5>
+                        <h5 class="card-title"><c:out value="${pagetitle}"></c:out></h5>
                         <p class="card-text text-justify mb-2">I wish i was a little bit taller, wish i was a baller,
                             wish i had a girl… also.</p>
                         <ul class="list-unstyled nav justify-content-center">
@@ -350,7 +350,9 @@
 
                         <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1">Edit</a></small></h5>
 
-                        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> go to <a href="choosepage" class="text-decoration-none">pages</a></p>
+                        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> go to <a href="choosepage"
+                                                                                                class="text-decoration-none">pages</a>
+                        </p>
 
                         <p class="card-text"><i class="fas fa-user-friends mr-2"></i> Become a friend with <a href="#"
                                                                                                               class="text-decoration-none">obama</a>
@@ -429,7 +431,7 @@
 
 
                     <div class="card-header bg-transparent">
-                        <form class="form-inline" method="post" action="wall">
+                        <form class="form-inline" method="post" action="page">
 
 
                             <div class="input-group w-100">
@@ -451,7 +453,7 @@
 
 
                     <!-- ahmed post -->
-                    <c:forEach items="${posts}" var="post">
+                    <c:forEach items="${pagePosts}" var="post">
                         <div class="card-body">
                             <div class="media">
                                 <img src="static/img/avatar-dhg.png" alt="img" width="55px" height="55px"
@@ -469,6 +471,7 @@
                                                       style="padding-bottom: 3px;padding-left: 3px">
                                                     <input type="hidden" name="id" value="${post.id}"/>
                                                     <input type="hidden" name="operation" value="like"/>
+                                                    <input type="hidden" name="page" value="page"/>
                                                     <input type="submit" value="Like" class="likeButton">
                                                 </form>
                                             </c:if>
@@ -477,6 +480,7 @@
                                                 <form method="post" action="like">
                                                     <input type="hidden" name="id" value="${post.id}"/>
                                                     <input type="hidden" name="operation" value="unlike"/>
+                                                    <input type="hidden" name="page" value="page"/>
                                                     <input type="submit" value="Unlike" class="likeButton">
                                                 </form>
                                             </c:if>
@@ -513,9 +517,11 @@
                                     <br>
                                     <c:forEach items="${post.comments}" var="comment">
                                         <div class="media mb-3">
-                                            <img src="static/img/avatar-dhg.png" alt="img" width="45px" height="45px" class="rounded-circle mr-2">
+                                            <img src="static/img/avatar-dhg.png" alt="img" width="45px" height="45px"
+                                                 class="rounded-circle mr-2">
                                             <div class="media-body">
-                                                <p class="card-text text-justify"><c:out value="${comment.username}"></c:out>: ${comment.commentText}</p>
+                                                <p class="card-text text-justify"><c:out
+                                                        value="${comment.username}"></c:out>: ${comment.commentText}</p>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -529,7 +535,8 @@
 
                                 <div class="input-group w-100">
                                     <input type="hidden" name="id" value="${post.id}"/>
-                                    <textarea name="commentText" id="commentText" placeholder="Enter your comment" class="form-control form-control-md"></textarea>
+                                    <textarea name="commentText" id="commentText" placeholder="Enter your comment"
+                                              class="form-control form-control-md"></textarea>
                                     <input type="submit" value="Comment">
 
                                         <%--                                <div class="input-group-append">--%>

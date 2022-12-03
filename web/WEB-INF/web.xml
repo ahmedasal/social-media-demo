@@ -76,5 +76,20 @@
         <servlet-name>page</servlet-name>
         <url-pattern>/page</url-pattern>
     </servlet-mapping>
-
+<servlet>
+    <servlet-name>choosepage</servlet-name>
+    <servlet-class>com.social.media.controllers.ChoosePageServlet</servlet-class>
+</servlet>
+    <servlet-mapping>
+        <servlet-name>choosepage</servlet-name>
+        <url-pattern>/choosepage</url-pattern>
+    </servlet-mapping>
+  <servlet>
+      <servlet-name>createPage</servlet-name>
+      <servlet-class>com.social.media.controllers.CreatePageServlet</servlet-class>
+  </servlet>
+    <servlet-mapping>
+        <servlet-name>createPage</servlet-name>
+        <url-pattern>/createpage</url-pattern>
+    </servlet-mapping>
 </web-app>

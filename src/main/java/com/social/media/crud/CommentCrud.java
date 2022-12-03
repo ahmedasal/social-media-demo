@@ -12,18 +12,15 @@ public class CommentCrud implements Crud<Comment, Integer> {
     @Override
     public Comment insert(Connection connection, Comment comment) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("insert into comments (comment_text, user_id,comment_parent_id, create_date, update_date , post_id) values (?,?,?,?,?,?)");
-
         preparedStatement.setString(1, comment.getCommentText());
         preparedStatement.setInt(2, comment.getUser().getId());
         if (comment.getParentCommentId() != null)
             preparedStatement.setInt(3, comment.getParentCommentId());
         else
             preparedStatement.setNull(3, Types.NULL);
-
         preparedStatement.setString(4, comment.getCreatedDate());
         preparedStatement.setString(5, comment.getUpdatedDate());
         preparedStatement.setInt(6, comment.getPostId());
-
         preparedStatement.execute();
         return comment;
     }

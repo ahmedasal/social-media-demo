@@ -4,6 +4,7 @@ import com.social.media.model.Like;
 import com.social.media.model.User;
 import com.social.media.service.LikeService;
 import com.social.media.util.ConnectionHelper;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,8 @@ import java.util.Date;
 
 public class LikeUnlikeServlet extends HttpServlet {
     WallServlet wallServlet = new WallServlet();
+    PageServlet pageServlet = new PageServlet();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection connection = null;
@@ -49,15 +52,17 @@ public class LikeUnlikeServlet extends HttpServlet {
             }
 
 
+            String page = req.getParameter("page");
 
-
-
-            wallServlet.doGet(req, resp);
+            if (page != null)
+                pageServlet.doGet(req, resp);
+            else
+                wallServlet.doGet(req, resp);
 
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
