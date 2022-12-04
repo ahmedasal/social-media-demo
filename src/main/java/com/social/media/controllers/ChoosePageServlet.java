@@ -1,5 +1,6 @@
 package com.social.media.controllers;
 
+import com.social.media.model.Page;
 import com.social.media.service.PageService;
 import com.social.media.util.ConnectionHelper;
 
@@ -22,8 +23,8 @@ public class ChoosePageServlet extends HttpServlet {
 
         try {
             connection = ConnectionHelper.openConnection();
-            Set<String> pagesNames = pageService.allPages(connection);
-            req.setAttribute("pages", pagesNames);
+            Set<Page> pages = pageService.allPages(connection);
+            req.setAttribute("pages", pages);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

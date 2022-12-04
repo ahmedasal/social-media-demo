@@ -1,5 +1,8 @@
 package com.social.media.model;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +32,16 @@ public class Post {
         this.postOwner = postOwner;
     }
 
+
+    public static Post fromDatabase(ResultSet resultSet) throws SQLException {
+        Post post = new Post();
+        post.setPageId(resultSet.getInt("page_id"));
+        post.setId(resultSet.getInt("id"));
+        post.setPostDate(resultSet.getDate("postDate"));
+        post.setPostOwner(resultSet.getInt("postOwner"));
+        post.setPost(resultSet.getString("post"));
+        return post;
+    }
 
     public int getId() {
         return id;

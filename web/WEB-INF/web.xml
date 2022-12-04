@@ -92,4 +92,12 @@
         <servlet-name>createPage</servlet-name>
         <url-pattern>/createpage</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>pageLike</servlet-name>
+        <servlet-class>com.social.media.controllers.PageLikeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>pageLike</servlet-name>
+        <url-pattern>/pagelike</url-pattern>
+    </servlet-mapping>
 </web-app>

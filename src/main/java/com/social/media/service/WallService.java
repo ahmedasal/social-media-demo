@@ -20,22 +20,24 @@ public class WallService {
         // (select user1 from users  where user2=? union select user2 from users where user1=?)
         //
       //  PreparedStatement preparedStatement = connection.prepareStatement("Select post,postDate,postOwner,updateDate,posts.id  from posts where postOwner in (select user1 from users where user2 = ? union select user2 from users where user1 = ?") ;
-        PreparedStatement preparedStatement = connection.prepareStatement("select post, postDate, postOwner, updateDate, id as postId from posts " +
-                "where postOwner in (select IF(user1=?,user2, user1) as friend from friendship  where user2=? or user1=?)  order by updateDate desc");
+        PreparedStatement preparedStatement = connection.prepareStatement("select post, postDate, postOwner, updateDate, id, page_id from posts " +
+                "where postOwner in (select IF(user1=?,user2, user1) as friend from friendship  where user2=? or user1=?)  " +
+                "or  0 < (select count(id) from user_page_like where user = ? and page = page_id) " +
+                "order by updateDate desc");
         preparedStatement.setInt(1, userId);
         preparedStatement.setInt(2, userId);
         preparedStatement.setInt(3, userId);
+        preparedStatement.setInt(4, userId);
+
 
         PostService postService = new PostService();
         Set<Post> posts = new LinkedHashSet<>();
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Post post = new Post();
-            post.setId(resultSet.getInt("postId"));
-            post.setPostDate(resultSet.getDate("postDate"));
-            post.setPostOwner(resultSet.getInt("postOwner"));
-            post.setPost(resultSet.getString("post"));
-            post.setComments(postService.getPostComments(connection, resultSet.getInt("postId")));
+
+            Post post = Post.fromDatabase(resultSet);
+
+            post.setComments(postService.getPostComments(connection, post.getId()));
             post.setLikesCount(postService.getLikesCount(connection, post.getId()));
             post.setLikedByMe(postService.likedByMe(connection, userId, post.getId()));
             post.setUsername(postService.getUsername(connection, post.getPostOwner()));

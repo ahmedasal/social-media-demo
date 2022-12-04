@@ -326,9 +326,27 @@
                     <div class="card-body text-center ">
                         <img src="static/img/avatar-dhg.png" alt="img" width="120px" height="120px"
                              class="rounded-circle mt-n5">
-                        <h5 class="card-title"><c:out value="${pagetitle}"></c:out></h5>
-                        <p class="card-text text-justify mb-2">I wish i was a little bit taller, wish i was a baller,
-                            wish i had a girl… also.</p>
+                        <h5 class="card-title"><c:out value="${page.pageName}"></c:out></h5>
+<%--&lt;%&ndash;                        <p class="card-text text-justify mb-2">I wish i was a little bit taller, wish i was a baller,&ndash;%&gt;--%>
+<%--&lt;%&ndash;                            wish i had a girl… also.</p>&ndash;%&gt;--%>
+<%--                        <div class="box" class="likeButton">--%>
+<%--                            <c:if test="${!page.likedByMe}">--%>
+                                <form method="post" action="pagelike"
+                                      style="padding-bottom: 3px;padding-left: 3px">
+                                    <input type="hidden" name="id" value="${page.id}"/>
+                                    <input type="hidden" name="operation" value="like"/>
+                                    <input type="submit" value="Like" class="likeButton">
+                                </form>
+<%--                            </c:if>--%>
+
+<%--                            <c:if test="${page.likedByMe}">--%>
+                                <form method="post" action="pagelike">
+                                    <input type="hidden" name="id" value="${page.id}"/>
+                                    <input type="hidden" name="operation" value="unlike"/>
+                                    <input type="submit" value="Unlike" class="likeButton">
+                                </form>
+<%--                            </c:if>--%>
+<%--                        </div>--%>
                         <ul class="list-unstyled nav justify-content-center">
                             <a href="#" class="text-dark text-decoration-none">
                                 <li class="nav-item">Friends <br> <strong>12M</strong></li>
@@ -343,70 +361,6 @@
 
                 </div>
 
-
-                <div class="card shadow-sm card-left2 mb-4">
-
-                    <div class="card-body">
-
-                        <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1">Edit</a></small></h5>
-
-                        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> go to <a href="choosepage"
-                                                                                                class="text-decoration-none">pages</a>
-                        </p>
-
-                        <p class="card-text"><i class="fas fa-user-friends mr-2"></i> Become a friend with <a href="#"
-                                                                                                              class="text-decoration-none">obama</a>
-                        </p>
-                        <p class="card-text"><i class="far fa-building mr-2"></i> Work at <a href="#"
-                                                                                             class="text-decoration-none">Github</a>
-                        </p>
-                        <p class="card-text"><i class="fas fa-home mr-2"></i> Live in <a href="#"
-                                                                                         class="text-decoration-none">San
-                            francisco</a></p>
-                        <p class="card-text"><i class="fas fa-map-marker mr-2"></i> From <a href="#"
-                                                                                            class="text-decoration-none">Seattle,
-                            WA</a></p>
-
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="card shadow-sm card-left3 mb-4">
-
-                    <div class="card-body">
-                        <h5 class="card-title">Photos<small class="ml-2"><a href="#">.Edit </a></small></h5>
-
-                        <div class="row">
-                            <div class="col-6 p-1">
-                                <a href="img/left1.jpg" data-lightbox="id"><img src="static/img/left1.jpg" alt="img"
-                                                                                class="img-fluid my-2"></a>
-                                <a href="img/left2.jpg" data-lightbox="id"><img src="static/img/left2.jpg" alt="img"
-                                                                                class="img-fluid my-2"></a>
-                                <a href="img/left3.jpg" data-lightbox="id"><img src="static/img/left3.jpg" alt="img"
-                                                                                class="img-fluid my-2"></a>
-
-                            </div>
-
-
-                            <div class="col-6 p-1">
-                                <a href="img/left4.jpg" data-lightbox="id"><img src="static/img/left4.jpg" alt="img"
-                                                                                class="img-fluid my-2"></a>
-                                <a href="img/left5.jpg" data-lightbox="id"><img src="static/img/left5.jpg" alt="img"
-                                                                                class="img-fluid my-2"></a>
-                                <a href="img/left6.jpg" data-lightbox="id"><img src="static/img/left6.jpg" alt="img"
-                                                                                class="img-fluid my-2"></a>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
 
 
             </div>
@@ -433,7 +387,7 @@
                     <div class="card-header bg-transparent">
                         <form class="form-inline" method="post" action="page">
 
-
+                            <input name="pageId" value="${page.id}" type="hidden">
                             <div class="input-group w-100">
 
                                 <textarea name="postText" id="postText" placeholder="Enter your post"
@@ -453,7 +407,7 @@
 
 
                     <!-- ahmed post -->
-                    <c:forEach items="${pagePosts}" var="post">
+                    <c:forEach items="${posts}" var="post">
                         <div class="card-body">
                             <div class="media">
                                 <img src="static/img/avatar-dhg.png" alt="img" width="55px" height="55px"
@@ -565,96 +519,6 @@
 
 
         <!---------------------------Statrs Right Columns----------------->
-
-
-        <div class="col-12 col-lg-3">
-
-
-            <div class="right-column">
-
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h6 class="card-title">Sponsored</h6>
-                        <img src="static/img/right1.jpg" alt="card-img" class="card-img mb-3">
-                        <p class="card-text text-justify"><span class="h6">It might be time to visit Iceland.</span>
-                            Iceland is so chill, and everything looks cool here. Also, we heard the people are
-                            pretty nice. What are you waiting for?</p>
-                        <a href="#" class="btn btn-outline-info card-link btn-sm">Buy a ticket</a>
-
-
-                    </div>
-
-                </div>
-
-
-                <div class="card shadow-sm mb-4">
-
-                    <div class="card-body">
-
-                        <h6 class="card-title ">Likes <a href="#" class="ml-1"><small>.View All</small> </a></h6>
-                        <div class="row no-gutters d-none d-lg-flex">
-                            <div class="col-6 p-1">
-                                <img src="static/img/avatar-dhg.png" alt="img" width="80px" height="80px"
-                                     class="rounded-circle mb-4">
-                                <img src="static/img/avatar-fat.jpg" alt="img" width="80px" height="80px"
-                                     class="rounded-circle">
-
-
-                            </div>
-                            <div class="col-6 p-1 text-left">
-                                <h6>Jacob Thornton @fat</h6>
-                                <a href="#" class="btn btn-outline-info btn-sm mb-3"><i
-                                        class="fas fa-user-friends"></i>Follow </a>
-
-                                <h6>Mark otto</h6>
-                                <a href="#" class="btn btn-outline-info  btn-sm"><i class="fas fa-user-friends"></i>Follow
-                                </a>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <p class="lead" style="font-size:18px;">Dave really likes these nerds, no one knows why
-                            though.</p>
-                    </div>
-
-
-                </div>
-
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <p>&copy; 2018 Bootstrap
-
-
-                            <a href="#">About</a>
-                            <a href="#">Help</a>
-                            <a href="#">Terms</a>
-                            <a href="#">Privacy</a>
-                            <a href="#">Cookies</a>
-                            <a href="#">Ads </a>
-                            <a href="#">Info</a>
-                            <a href="#">Brand</a>
-                            <a href="#">Blog</a>
-                            <a href="#">Status</a>
-                            <a href="#">Apps</a>
-                            <a href="#">Jobs</a>
-                            <a href="#">Advertise</a>
-
-
-                        </p>
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-        </div>
 
 
     </div>

@@ -16,8 +16,8 @@
 
 
 <ul>
-    <c:forEach items="${pages}" var="pageName">
-        <li><h4><a href="page?choosepage=${pageName}"><c:out value="${pageName}"/></a> </h4>
+    <c:forEach items="${pages}" var="page">
+        <li><h4><a href="page?pageId=${page.id}"><c:out value="${page.pageName}"/></a> </h4>
     </c:forEach></ul>
 </body>
 </html>

@@ -19,24 +19,30 @@ import java.util.List;
 
 public class PageServlet extends HttpServlet {
 
-    Page page = new Page();
-    String pageName;
+    PageService pageService = new PageService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection connection = null;
         User user = (User) req.getSession().getAttribute("currentUser");
-        PageService pageService = new PageService();
+        int pageId = Integer.parseInt(req.getParameter("pageId"));
 
         try {
             connection = ConnectionHelper.openConnection();
-            pageName = req.getParameter("choosepage");
-            req.setAttribute("pagetitle", pageName);
-            page.setId(pageService.getPageId(connection, pageName));
+            Page page = pageService.getPage(connection, pageId);
             List<Post> pagePosts = pageService.showPagePosts(connection, page.getId(), user.getId());
-            req.setAttribute("pagePosts", pagePosts);
+            req.setAttribute("page", page);
+            req.setAttribute("posts", pagePosts);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/page.jsp");
@@ -48,11 +54,13 @@ public class PageServlet extends HttpServlet {
         Connection connection = null;
         PageService pageService = new PageService();
         User user = (User) req.getSession().getAttribute("currentUser");
+        int pageId = Integer.parseInt(req.getParameter("pageId"));
+
         Post post = new Post();
         post.setPost(req.getParameter("postText"));
         post.setPostOwner(user.getId());
         post.setPostDate(new Date());
-        post.setPageId(page.getId());
+        post.setPageId(pageId);
 
 
         try {
@@ -60,17 +68,12 @@ public class PageServlet extends HttpServlet {
             if (post.getPost() != null && post.getPost().length() > 0) {
                 pageService.addPostToPage(connection, post);
                 req.setAttribute("postAdded", "post is added successfully");
-//                req.getRequestDispatcher("/views/home.jsp").forward(req, resp);
-
             } else {
                 req.setAttribute("postAdded", "Please enter your post");
             }
-            List<Post> pagePosts = pageService.showPagePosts(connection, page.getId(), user.getId());
-            req.setAttribute("pagetitle", pageName);
 
-            req.setAttribute("pagePosts", pagePosts);
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/page.jsp");
-            requestDispatcher.forward(req, resp);
+            resp.sendRedirect("page?pageId="+pageId);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

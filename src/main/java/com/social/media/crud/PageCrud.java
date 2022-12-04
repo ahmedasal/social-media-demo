@@ -2,10 +2,7 @@ package com.social.media.crud;
 
 import com.social.media.model.Page;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class PageCrud implements Crud<Page, Integer>{
 
@@ -19,8 +16,18 @@ public class PageCrud implements Crud<Page, Integer>{
     }
 
     @Override
-    public Page get(Connection connection, Integer key) throws SQLException {
-        return null;
+    public Page get(Connection connection, Integer id) throws SQLException {
+        Page page = new Page();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from pages where id = ?");
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(resultSet.next()){
+            page.setId(resultSet.getInt("id"));
+            page.setPageName(resultSet.getString("name"));
+            page.setAdminUser(resultSet.getInt("user_creator"));
+            page.setCreatePageDate(resultSet.getTimestamp("create_date"));
+        }
+        return page;
     }
 
     @Override

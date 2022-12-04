@@ -10,6 +10,13 @@ public class Page {
     Timestamp createPageDate;
     int adminUser;
 
+    public Page(int id, String pageName) {
+        this.id = id;
+        this.pageName = pageName;
+    }
+
+    public Page() {}
+
     public int getId() {
         return id;
     }
