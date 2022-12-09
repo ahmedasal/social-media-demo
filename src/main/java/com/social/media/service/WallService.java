@@ -14,20 +14,23 @@ import java.util.Set;
 
 public class WallService {
     Wall wall = new Wall();
-// TODO offset and limit;
-    public Set<Post> getWallPosts(Connection connection, int userId) throws SQLException {
+
+    // TODO offset and limit;
+    public Set<Post> getWallPosts(Connection connection, int userId, int offset, int noOfRows) throws SQLException {
         // select post, postDate, postOwner, updateDate, id from posts where postOwner in
         // (select user1 from users  where user2=? union select user2 from users where user1=?)
         //
-      //  PreparedStatement preparedStatement = connection.prepareStatement("Select post,postDate,postOwner,updateDate,posts.id  from posts where postOwner in (select user1 from users where user2 = ? union select user2 from users where user1 = ?") ;
+        //  PreparedStatement preparedStatement = connection.prepareStatement("Select post,postDate,postOwner,updateDate,posts.id  from posts where postOwner in (select user1 from users where user2 = ? union select user2 from users where user1 = ?") ;
         PreparedStatement preparedStatement = connection.prepareStatement("select post, postDate, postOwner, updateDate, id, page_id from posts " +
                 "where postOwner in (select IF(user1=?,user2, user1) as friend from friendship  where user2=? or user1=?)  " +
                 "or  0 < (select count(id) from user_page_like where user = ? and page = page_id) " +
-                "order by updateDate desc");
+                "order by updateDate desc limit ? , ?");
         preparedStatement.setInt(1, userId);
         preparedStatement.setInt(2, userId);
         preparedStatement.setInt(3, userId);
         preparedStatement.setInt(4, userId);
+        preparedStatement.setInt(5, offset);
+        preparedStatement.setInt(6, noOfRows);
 
 
         PostService postService = new PostService();
@@ -47,13 +50,26 @@ public class WallService {
         return posts;
     }
 
+    public int countWallPosts(Connection connection, int userId, int offset, int noOfRows) throws SQLException {
+        int count = 0;
+        PreparedStatement preparedStatement = connection.prepareStatement("select count(id) as co from posts " +
+                "where postOwner in (select IF(user1=?,user2, user1) as friend from friendship  where user2=? or user1=?)  " +
+                "or  0 < (select count(id) from user_page_like where user = ? and page = page_id) " +
+                "order by updateDate desc ");
+        preparedStatement.setInt(1, userId);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.setInt(3, userId);
+        preparedStatement.setInt(4, userId);
+
+
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            count =rs.getInt("co");
+        }
+        return count;
+    }
+
     //
-
-
-
-
-
-
 
 
 }

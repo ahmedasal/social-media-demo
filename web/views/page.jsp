@@ -233,7 +233,8 @@
                                 <h6 class="media-header">Archer andu and <strong> 5 others</strong></h6>
                                 <p class="media-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 
-                            </div>
+                            </d
+                                iv>
 
                         </li>
                     </a>
@@ -474,8 +475,7 @@
                                             <img src="static/img/avatar-dhg.png" alt="img" width="45px" height="45px"
                                                  class="rounded-circle mr-2">
                                             <div class="media-body">
-                                                <p class="card-text text-justify"><c:out
-                                                        value="${comment.username}"></c:out>: ${comment.commentText}</p>
+                                                <p class="card-text text-justify"><c:out value="${comment.username}"></c:out>: ${comment.commentText}</p>
                                             </div>
                                         </div>
                                     </c:forEach>

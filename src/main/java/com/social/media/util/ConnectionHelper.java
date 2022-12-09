@@ -15,7 +15,7 @@ public class ConnectionHelper {
         }
     }
     public static Connection openConnection() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialMediaApp", "root", "password");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialMediaApp", "root", "test123");
         return connection;
     }
 

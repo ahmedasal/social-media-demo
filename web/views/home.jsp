@@ -544,6 +544,18 @@
                         </div>
 
                     </c:forEach>
+                    <dev style=" text-align: center">
+                        <c:if test="${currentPage != 1}">
+                        <a href="wall?page=${currentPage-1}">prev.</a>
+                        </c:if>
+
+                        <c:if test="${(currentPage != 1) and (currentPage != lastPage)}">|</c:if>
+
+                        <c:if test="${currentPage != lastPage}">
+                        <a href="wall?page=${currentPage+1}">next</a>
+                        </c:if>
+                    </dev>
+
                 </div>
 
             </div>

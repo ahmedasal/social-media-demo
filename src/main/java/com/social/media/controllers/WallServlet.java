@@ -26,13 +26,25 @@ public class WallServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        int page = 1;
+        int noOfPages = 0;
+        int noOfRows = 5;
         Connection connection = null;
         User user = (User) req.getSession().getAttribute("currentUser");
+        if(req.getParameter("page") != null)
+           page = Integer.parseInt(req.getParameter("page"));
         try {
             connection = ConnectionHelper.openConnection();
-            Set<Post> posts = wallService.getWallPosts(connection , user.getId());
+            Set<Post> posts = wallService.getWallPosts(connection , user.getId(), (page-1)*noOfRows, noOfRows);
             req.setAttribute("posts", posts);
+            req.setAttribute("currentPage", page);
+            int count = wallService.countWallPosts(connection , user.getId(), (page-1)*noOfRows, noOfRows);
+            if(count/noOfRows == 0){
+                noOfPages = count/noOfRows;
+            }else{
+                noOfPages = count/noOfRows + 1 ;
+            }
+            req.setAttribute("lastPage", noOfPages);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/home.jsp");
             requestDispatcher.forward(req, resp);
 
