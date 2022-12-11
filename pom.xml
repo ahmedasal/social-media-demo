@@ -26,12 +26,21 @@
       <version>8.0.31</version>
     </dependency>
 
+<!--    <dependency>-->
+<!--      <groupId>org.apache.tomcat</groupId>-->
+<!--      <artifactId>servlet-api</artifactId>-->
+<!--      <version>${tomcat.version}</version>-->
+<!--      <scope>provided</scope>-->
+
+<!--    </dependency>-->
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
     <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>${tomcat.version}</version>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.0-b01</version>
       <scope>provided</scope>
     </dependency>
+
 
     <dependency>
       <groupId>junit</groupId>

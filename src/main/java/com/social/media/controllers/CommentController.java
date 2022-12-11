@@ -1,31 +1,25 @@
 package com.social.media.controllers;
 
-
-
-import com.social.media.model.Like;
-import com.social.media.service.LikeService;
-
+import com.social.media.model.Image;
+import com.social.media.service.PostService;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import java.sql.SQLException;
-
+import java.util.Arrays;
 
 public class CommentController {
 
 
-    public static void main(String[] args) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialMediaApp", "root", "password");
-        LikeService likeService = new LikeService();
-        Like like = new Like();
-        like.setUserId(45);
-        like.setPostId(3000);
-        like.setCreateDate("2019-12-20 10:10:10");
-
-
-        likeService.likePost(connection, like);
-
-
+    public static void main(String[] args) throws SQLException, IOException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/socialMediaApp", "root", "test123");
+        PostService postService = new PostService();
+        Image image = postService.retrieveImageOfPost(connection, 1);
+        byte[] bytes= image.getInputStream().readAllBytes();
+        FileOutputStream fileOutputStream = new FileOutputStream("/home/ahmed/Desktop/ahmed/");
+        fileOutputStream.write(bytes);
+        System.out.println(Arrays.toString(bytes));
         connection.close();
 
 

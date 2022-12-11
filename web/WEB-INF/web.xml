@@ -100,4 +100,12 @@
         <servlet-name>pageLike</servlet-name>
         <url-pattern>/pagelike</url-pattern>
     </servlet-mapping>
+<servlet>
+    <servlet-name>uploadImage</servlet-name>
+    <servlet-class>com.social.media.controllers.FileUploadServlet</servlet-class>
+</servlet>
+    <servlet-mapping>
+        <servlet-name>uploadImage</servlet-name>
+        <url-pattern>/uploadImage</url-pattern>
+    </servlet-mapping>
 </web-app>

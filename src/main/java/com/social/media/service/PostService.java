@@ -2,13 +2,12 @@ package com.social.media.service;
 
 import com.social.media.crud.PostCrud;
 import com.social.media.model.Comment;
+import com.social.media.model.Image;
 import com.social.media.model.Post;
 import com.social.media.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.InputStream;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class PostService {
@@ -22,29 +21,31 @@ public class PostService {
         resultSet.next();
         return resultSet.getInt("total") > 0;
     }
+
     public Post writePost(Connection connection, Post post) throws SQLException {
         postCrud.insert(connection, post);
         return post;
     }
+
     public Post getPost(Connection connection, Integer id) throws SQLException {
         Post post = postCrud.get(connection, id);
         return post;
 
     }
 
-//TODO getPost (postCrud.getPost commentCrud.getPstComments
+    //TODO getPost (postCrud.getPost commentCrud.getPstComments
     public int deletePost(Connection connection, int id) throws SQLException {
         int numberOfRowsDeleted = postCrud.delete(connection, id);
         return numberOfRowsDeleted;
     }
 
-    public ArrayList<Comment> getPostComments (Connection connection, int postId) throws SQLException {
+    public ArrayList<Comment> getPostComments(Connection connection, int postId) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("select * from comments where post_id = ? order by create_date");
         preparedStatement.setInt(1, postId);
-        ArrayList<Comment> comments =  new ArrayList<>();
+        ArrayList<Comment> comments = new ArrayList<>();
 
         ResultSet resultSet = preparedStatement.executeQuery();
-        while(resultSet.next()){
+        while (resultSet.next()) {
             Comment comment = new Comment();
             User user = new User();
             comment.setId(resultSet.getInt("id"));
@@ -61,27 +62,49 @@ public class PostService {
 
         return comments;
     }
+
     public int getLikesCount(Connection connection, int postId) throws SQLException {
         int count = 0;
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT likes_count FROM socialMediaApp.posts where id= ?;");
         preparedStatement.setInt(1, postId);
         ResultSet rs = preparedStatement.executeQuery();
-        if(rs.next()){
+        if (rs.next()) {
             count = rs.getInt("likes_count");
         }
         return count;
     }
 
 
-    public String getUsername (Connection connection, int id) throws SQLException {
+    public String getUsername(Connection connection, int id) throws SQLException {
         String username = null;
         PreparedStatement preparedStatement = connection.prepareStatement("select username from users where id = ?;");
         preparedStatement.setInt(1, id);
         ResultSet rs = preparedStatement.executeQuery();
-        if(rs.next()){
+        if (rs.next()) {
             username = rs.getString("username");
         }
         return username;
+    }
+
+    public Image addImageToPost(Connection connection, Image img) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into post_images (post_id, image) values(?,?)");
+        preparedStatement.setInt(1, img.getPostId());
+        preparedStatement.setBlob(2, img.getInputStream());
+        preparedStatement.execute();
+        return img;
+    }
+
+    public Image retrieveImageOfPost(Connection connection, int imageId) throws SQLException {
+        Image image = new Image();
+        PreparedStatement preparedStatement = connection.prepareStatement("select * from post_images where id = ?");
+        preparedStatement.setInt(1, imageId);
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            image.setPostId(rs.getInt("post_id"));
+            image.setInputStream(rs.getBlob("image").getBinaryStream());
+        }
+
+        return image;
     }
 
 }

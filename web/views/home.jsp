@@ -350,7 +350,9 @@
 
                         <h5 class="mb-3 card-title">About <small><a href="#" class="ml-1">Edit</a></small></h5>
 
-                        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> go to <a href="choosepage" class="text-decoration-none">pages</a></p>
+                        <p class="card-text"><i class="fas fa-calendar-week mr-2"></i> go to <a href="choosepage"
+                                                                                                class="text-decoration-none">pages</a>
+                        </p>
 
                         <p class="card-text"><i class="fas fa-user-friends mr-2"></i> Become a friend with <a href="#"
                                                                                                               class="text-decoration-none">obama</a>
@@ -462,6 +464,19 @@
                                     <p class="card-text text-justify">
                                     <h3>${post.post}</h3>
                                     </p>
+                                    </tr>
+                                    <form method="post" action="uploadImage" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="${post.id}"/>
+                                        <tr>
+                                            <td>Portrait Photo:</td>
+                                            <td><input type="file" name="photo" size="50"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="submit" value="Upload">
+                                            </td>
+                                        </tr>
+                                    </form>
                                     <div class="clearfix">
                                         <div class="box" class="likeButton">
                                             <c:if test="${!post.likedByMe}">
@@ -513,9 +528,11 @@
                                     <br>
                                     <c:forEach items="${post.comments}" var="comment">
                                         <div class="media mb-3">
-                                            <img src="static/img/avatar-dhg.png" alt="img" width="45px" height="45px" class="rounded-circle mr-2">
+                                            <img src="static/img/avatar-dhg.png" alt="img" width="45px" height="45px"
+                                                 class="rounded-circle mr-2">
                                             <div class="media-body">
-                                                <p class="card-text text-justify"><c:out value="${comment.username}"></c:out>: ${comment.commentText}</p>
+                                                <p class="card-text text-justify"><c:out
+                                                        value="${comment.username}"></c:out>: ${comment.commentText}</p>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -529,7 +546,8 @@
 
                                 <div class="input-group w-100">
                                     <input type="hidden" name="id" value="${post.id}"/>
-                                    <textarea name="commentText" id="commentText" placeholder="Enter your comment" class="form-control form-control-md"></textarea>
+                                    <textarea name="commentText" id="commentText" placeholder="Enter your comment"
+                                              class="form-control form-control-md"></textarea>
                                     <input type="submit" value="Comment">
 
                                         <%--                                <div class="input-group-append">--%>
@@ -546,13 +564,13 @@
                     </c:forEach>
                     <dev style=" text-align: center">
                         <c:if test="${currentPage != 1}">
-                        <a href="wall?page=${currentPage-1}">prev.</a>
+                            <a href="wall?page=${currentPage-1}">prev.</a>
                         </c:if>
 
                         <c:if test="${(currentPage != 1) and (currentPage != lastPage)}">|</c:if>
 
                         <c:if test="${currentPage != lastPage}">
-                        <a href="wall?page=${currentPage+1}">next</a>
+                            <a href="wall?page=${currentPage+1}">next</a>
                         </c:if>
                     </dev>
 
