@@ -431,52 +431,57 @@
 
 
                     <div class="card-header bg-transparent">
-                        <form class="form-inline" method="post" action="wall">
+                        <form class="form-inline" method="post" action="wall" enctype="multipart/form-data">
 
 
                             <div class="input-group w-100">
 
                                 <textarea name="postText" id="postText" placeholder="Enter your post"
                                           class="form-control form-control-md"></textarea>
-                                <input type="submit" value="Post">
-
-                                <%--                                <div class="input-group-append">--%>
-                                <%--                                    <div class="input-group-text">--%>
-                                <%--                                        <i class="fas fa-camera"></i>--%>
-                                <%--                                    </div>--%>
                             </div>
+                            <div>
 
+                                <br>
 
+                                <input type="file" name="photos" multiple>
+                                <br>
+                                <input type="submit" value="Post">
+                            </div>
                         </form>
 
                     </div>
+                            <c:if test="${post.id eq pId}" >
+                                <c:out value="${upload}"></c:out>
+                            </c:if>
+
+                            <%--                                <div class="input-group-append">--%>
+                            <%--                                    <div class="input-group-text">--%>
+                            <%--                                        <i class="fas fa-camera"></i>--%>
+                            <%--                                    </div>--%>
+                    </div>
+
+
+                    </form>
+
 
 
                     <!-- ahmed post -->
                     <c:forEach items="${posts}" var="post">
                         <div class="card-body">
                             <div class="media">
-                                <img src="static/img/avatar-dhg.png" alt="img" width="55px" height="55px"
-                                     class="rounded-circle mr-3">
-
                                 <div class="media-body">
                                     <h5><c:out value="${post.username}"></c:out></h5>
                                     <p class="card-text text-justify">
                                     <h3>${post.post}</h3>
                                     </p>
-                                    </tr>
-                                    <form method="post" action="uploadImage" enctype="multipart/form-data">
-                                        <input type="hidden" name="id" value="${post.id}"/>
-                                        <tr>
-                                            <td>Portrait Photo:</td>
-                                            <td><input type="file" name="photo" size="50"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <input type="submit" value="Upload">
-                                            </td>
-                                        </tr>
-                                    </form>
+                  <c:forEach items="${post.images}" var="imageId">
+                      <img src="image?id=${imageId}" alt="post" width="500">
+                  </c:forEach>
+<%--                                    <c:if test="${post.id eq pId}" >--%>
+<%--                                        <c:out value="${upload}"></c:out>--%>
+<%--                                    </c:if>--%>
+
+
                                     <div class="clearfix">
                                         <div class="box" class="likeButton">
                                             <c:if test="${!post.likedByMe}">
@@ -537,6 +542,9 @@
                                         </div>
                                     </c:forEach>
                                 </div>
+
+                                <img src="static/img/avatar-dhg.png" alt="img" width="55px" height="55px"
+                                     class="rounded-circle mr-3">
                                 <small>5min</small>
                             </div>
                         </div>

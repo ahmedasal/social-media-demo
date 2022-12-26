@@ -49,10 +49,10 @@ public class PageService {
 
             Post post = Post.fromDatabase(resultSet);
 
-            post.setComments(postService.getPostComments(connection, post.getId()));
-            post.setLikesCount(postService.getLikesCount(connection, post.getId()));
-            post.setLikedByMe(postService.likedByMe(connection, userId, post.getId()));
-            post.setUsername(postService.getUsername(connection, post.getPostOwner()));
+            post.setComments(postService.getPostComments(post.getId()));
+            post.setLikesCount(postService.getLikesCount(post.getId()));
+            post.setLikedByMe(postService.likedByMe(userId, post.getId()));
+            post.setUsername(postService.getUsername(post.getPostOwner()));
             posts.add(post);
         }
         return posts;

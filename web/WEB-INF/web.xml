@@ -108,4 +108,12 @@
         <servlet-name>uploadImage</servlet-name>
         <url-pattern>/uploadImage</url-pattern>
     </servlet-mapping>
-</web-app>
+    <servlet>
+        <servlet-name>showImage</servlet-name>
+        <servlet-class>com.social.media.controllers.ShowImagesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>showImage</servlet-name>
+        <url-pattern>/image</url-pattern>
+    </servlet-mapping>
+ </web-app>

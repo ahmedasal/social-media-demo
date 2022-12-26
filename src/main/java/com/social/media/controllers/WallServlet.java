@@ -1,6 +1,7 @@
 package com.social.media.controllers;
 
 
+import com.social.media.model.Image;
 import com.social.media.model.Post;
 import com.social.media.model.User;
 import com.social.media.service.PostService;
@@ -15,9 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 public class WallServlet extends HttpServlet {
@@ -31,18 +29,18 @@ public class WallServlet extends HttpServlet {
         int noOfRows = 5;
         Connection connection = null;
         User user = (User) req.getSession().getAttribute("currentUser");
-        if(req.getParameter("page") != null)
-           page = Integer.parseInt(req.getParameter("page"));
+        if (req.getParameter("page") != null)
+            page = Integer.parseInt(req.getParameter("page"));
         try {
-            connection = ConnectionHelper.openConnection();
-            Set<Post> posts = wallService.getWallPosts(connection , user.getId(), (page-1)*noOfRows, noOfRows);
+            // connection = ConnectionHelper.openConnection();
+            Set<Post> posts = wallService.getWallPosts(user.getId(), (page - 1) * noOfRows, noOfRows);
             req.setAttribute("posts", posts);
             req.setAttribute("currentPage", page);
-            int count = wallService.countWallPosts(connection , user.getId(), (page-1)*noOfRows, noOfRows);
-            if(count/noOfRows == 0){
-                noOfPages = count/noOfRows;
-            }else{
-                noOfPages = count/noOfRows + 1 ;
+            int count = wallService.countWallPosts(user.getId(), (page - 1) * noOfRows, noOfRows);
+            if (count / noOfRows == 0) {
+                noOfPages = count / noOfRows;
+            } else {
+                noOfPages = count / noOfRows + 1;
             }
             req.setAttribute("lastPage", noOfPages);
             RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/home.jsp");
@@ -51,7 +49,13 @@ public class WallServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
     }
 
     @Override
@@ -59,25 +63,20 @@ public class WallServlet extends HttpServlet {
 
         Connection connection = null;
         PostService postService = new PostService();
-        User user = (User)req.getSession().getAttribute("currentUser");
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date date = new Date();
-//        String date1 = formatter.format(date);
-
-        Post post = new Post();
-        post.setPost(req.getParameter("postText"));
-        post.setPostOwner(user.getId());
-        post.setPostDate(new Date());
 
         try {
             connection = ConnectionHelper.openConnection();
-            if(post.getPost() != null && post.getPost().length() > 0) {
-                postService.writePost(connection, post);
-                req.setAttribute("postAdded","post is added successfully");
-//                req.getRequestDispatcher("/views/home.jsp").forward(req, resp);
+            PostRequestReader.PostWithPhotos postWithPhotos = PostRequestReader.readPostRequest(req, resp);
+            if (postWithPhotos.post != null && postWithPhotos.post.getPost().length() > 0) {
+                postService.writePost(connection, postWithPhotos.post);
+//                req.setAttribute("postAdded", "post is added successfully");
+                for(Image image : postWithPhotos.images) {
+                    image.setPostId(postWithPhotos.post.getId());
+                    postService.saveImage(connection, image);
+                }
 
-            }else{
-                req.setAttribute("postAdded","Please enter your post");
+            } else {
+                req.setAttribute("postAdded", "Please enter your post");
             }
 
             doGet(req, resp);
@@ -85,7 +84,7 @@ public class WallServlet extends HttpServlet {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException e) {

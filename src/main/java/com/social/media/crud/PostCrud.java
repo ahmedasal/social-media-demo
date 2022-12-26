@@ -9,14 +9,21 @@ public class PostCrud implements Crud<Post, Integer> {
 
     @Override
     public Post insert(Connection connection, Post post) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into posts (post, postDate, updateDate, postOwner,page_id) values (?,?,?,?,?)");
+
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into posts (post, postDate, updateDate, postOwner,page_id) " +
+                        "values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         Timestamp createdOn = new Timestamp(new java.util.Date().getTime());
         preparedStatement.setString(1, post.getPost());
         preparedStatement.setTimestamp(2, createdOn);
         preparedStatement.setTimestamp(3, createdOn);
         preparedStatement.setInt(4, post.getPostOwner());
         preparedStatement.setInt(5, post.getPageId());
-        preparedStatement.execute();
+        preparedStatement.executeUpdate();
+
+        ResultSet generatedKeysResultSet = preparedStatement.getGeneratedKeys();
+        generatedKeysResultSet.next();
+        post.setId(generatedKeysResultSet.getInt(1));
+
         preparedStatement.close();
         return post;
     }

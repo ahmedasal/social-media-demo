@@ -21,6 +21,7 @@ public class Post {
     boolean likedByMe;
 
     List<Comment> comments;
+    List<Integer> images;
 
     public Post() {
 
@@ -125,6 +126,14 @@ public class Post {
 
     public void setPageId(int pageId) {
         this.pageId = pageId;
+    }
+
+    public List<Integer> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Integer> images) {
+        this.images = images;
     }
 
     @Override
